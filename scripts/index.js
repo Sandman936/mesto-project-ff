@@ -1,52 +1,42 @@
-// Темплейт карточки
-
-const cardsTemplate = document.querySelector("#card-template").content;
-
-// DOM узлы
-
-const cardsList = document.querySelector(".places__list");
-
-const cardsItem = cardsTemplate.querySelector(".places__item");
-
-const cardImage = cardsTemplate.querySelector(".card__image");
-
-const cardTitle = cardsTemplate.querySelector(".card__title");
-
-
 // Функция создания карточки
 
-const renderCards = (name, link) => {
-    cardTitle.textContent = name;
+const createCard = (cardName, cardLink) => {
+    const cardsTemplate = document.querySelector("#card-template").content;
+    const cardElement = cardsTemplate.querySelector(".places__item").cloneNode(true);
 
-    cardImage.src = link;
+    const cardImage = cardElement.querySelector(".card__image");
+    const cardTitle = cardElement.querySelector(".card__title");
 
-    cardImage.alt = name;
+    cardTitle.textContent = cardName;
 
-    createCard();
-};
+    cardImage.src = cardLink;
+    cardImage.alt = cardName;
 
-const createCard = () => {
-    const cardsItemCloned = cardsItem.cloneNode(true);
+    const removeButton = cardElement.querySelector(".card__delete-button");
 
-    cardsList.append(cardsItemCloned);
-
-    const removeButton = cardsItemCloned.querySelector(".card__delete-button");
-
-    removeButton.addEventListener("click", function (evt) {
-        removeCard(evt);
+    removeButton.addEventListener("click", (evt) => {
+        removeCard(evt)
     });
+
+    return cardElement;
 }
 
 // Функция удаления карточки
 
 const removeCard = (evt) => {
     const removeItem = evt.target;
-
     removeItem.parentElement.remove();
 }
 
 // Вывести карточки на страницу
 
+const renderCards = (nameValue, linkValue ) => {
+    const newCard = createCard(nameValue, linkValue);
+    const cardsList = document.querySelector(".places__list");
+
+    cardsList.append(newCard);
+};
+
 initialCards.forEach((card) => {
-    renderCards(card.name, card.link);
+   renderCards(card.name, card.link);
 });
