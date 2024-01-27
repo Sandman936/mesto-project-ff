@@ -1,3 +1,5 @@
+const cardsList = document.querySelector(".places__list");
+
 // Функция создания карточки
 
 const createCard = (cardName, cardLink) => {
@@ -32,7 +34,6 @@ const removeCard = (evt) => {
 
 const renderCards = (nameValue, linkValue ) => {
     const newCard = createCard(nameValue, linkValue);
-    const cardsList = document.querySelector(".places__list");
 
     cardsList.append(newCard);
 };
