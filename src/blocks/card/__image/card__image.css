@@ -1,5 +1,5 @@
 .card__image {
-  display: block;
+  display: flex;
   height: 282px;
   object-fit: cover;
   width: 100%;
