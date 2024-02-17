@@ -16,20 +16,20 @@ export const createCard = (cardName, cardLink, removeCard, likeClick, imageOpen)
 
     likeButton.addEventListener("click", likeClick);
 
-    cardImage.addEventListener("click", imageOpen);
+    cardImage.addEventListener('click', () => imageOpen({ cardName, cardLink }));
 
     return cardElement;
 };
 
 // Функция удаления карточки
 
-export function HandleRemoveCard (evt) {
+export function handleRemoveCard (evt) {
     const removeItem = evt.target;
-    removeItem.parentElement.remove();
+    removeItem.closest(".card").remove();
 };
 
 //Функция обработки лайка
 
-export function HandleLikeClick (event) {
+export function handleLikeClick (event) {
     event.target.classList.toggle("card__like-button_is-active");
 };
