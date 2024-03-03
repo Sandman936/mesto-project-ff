@@ -14,20 +14,16 @@ export function closeModal (popupElement) {
 
 //Обработчики событий закрытия модального окна
 
-export function handleCrossClick (popupElement) {
-    closeModal(popupElement);
-};
-
-export function handleOverlayClick (event, popupElement) {
-    if (event.target === popupElement) {
-        closeModal(popupElement);
+export function handleOverlayClick (event) {
+    if (event.target === event.currentTarget) {
+        closeModal(event.currentTarget);
     };
 };
 
 function handleEscapePress (event) {
     if (event.key === "Escape") {
         const currentPopup = document.querySelector(".popup_is-opened");
-        
+
         closeModal(currentPopup);
     };
 };
