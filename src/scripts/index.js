@@ -159,10 +159,10 @@ function formInit () {
 //Обработчики отправки форм
 
 function handleEditProfileFormSubmit (event) {
-    const currentButton = popupEdit.querySelector('.button');
+    const currentButton = popupEdit.querySelector(".button");
     
     event.preventDefault();
-    currentButton.textContent = 'Сохранение...'
+    currentButton.textContent = "Сохранение..."
     profileDataPatch(editInputName.value, editInputDesc.value)
     .then( (res) => {
         profileInfoName.textContent = res.name;
@@ -172,7 +172,7 @@ function handleEditProfileFormSubmit (event) {
         console.error(err);
     })
     .finally( () => {
-        currentButton.textContent = 'Сохранение';
+        currentButton.textContent = "Сохранение";
         closeModal(popupEdit);
     })
 };
@@ -181,7 +181,7 @@ function handleAddCardFormSubmit (event) {
     const currentButton = popupAddCard.querySelector('.button');
     
     event.preventDefault();
-    currentButton.textContent = 'Сохранение...'
+    currentButton.textContent = "Сохранение...";
     newCardDataPost(addCardInputName.value, addCardInputLink.value)
     .then( (res) => {
         createNewCard(res, true);
@@ -194,16 +194,16 @@ function handleAddCardFormSubmit (event) {
             submitButtonSelector: '.popup__button',
             inactiveButtonClass: 'popup__button_disabled'
         });
-        currentButton.textContent = 'Сохранение';
+        currentButton.textContent = "Сохранение";
         closeModal(popupAddCard);
     })
 };
 
 function handleEditAvatarSubmit (event) {
-    const currentButton = popupAvatar.querySelector('.button');
+    const currentButton = popupAvatar.querySelector(".button");
     
     event.preventDefault();
-    currentButton.textContent = 'Сохранение...'
+    currentButton.textContent = "Сохранение...";
     profileAvatarDataPatch(avatarInputLink.value)
     .then( (res) => {
         profileInfoAvatar.setAttribute('style', `background-image: url(${res.avatar})`);
@@ -212,7 +212,7 @@ function handleEditAvatarSubmit (event) {
         console.error(err);
     })
     .finally( () => {
-        currentButton.textContent = 'Сохранение';
+        currentButton.textContent = "Сохранение";
         closeModal(popupAvatar);
     })
 };
@@ -235,7 +235,7 @@ dataInit()
     const profileData = res[0];
     const cardsData = res[1];
 
-    profileInfoAvatar.setAttribute('style', `background-image: url(${profileData.avatar})`);
+    profileInfoAvatar.setAttribute("style", `background-image: url(${profileData.avatar})`);
     profileInfoName.textContent = profileData.name;
     profileInfoDesc.textContent = profileData.about;
 

@@ -32,7 +32,7 @@ export const createCard = (card, cardOwner, isLiked, removeCardModal, likeClick,
         likeClick(event, card._id, isLiked, likeButton, likeValue, likeDataPut, likeDataDelete);
     });
 
-    cardImage.addEventListener('click', () => imageOpen(card));
+    cardImage.addEventListener("click", () => imageOpen(card));
 
     return cardElement;
 };
