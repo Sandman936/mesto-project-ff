@@ -1,4 +1,4 @@
-//
+//Конфиг отправки запроса
 
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-8',
@@ -6,7 +6,17 @@ const config = {
       authorization: '16d9fcd2-6486-4fff-bda9-31ea0dd0b509',
       'Content-Type': 'application/json'
     }
-}
+};
+
+//Функция проверки ответа
+
+function handleResponse (result) {
+    if (result.ok) {
+        return result.json();
+    }
+
+    return Promise.reject(`Код ошибки: ${result.status}`);
+};
 
 //Получение данных профиля с сервера
 
@@ -15,15 +25,8 @@ function profileInit () {
         headers: config.headers
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Получение карточек с сервера
@@ -33,15 +36,8 @@ function cardsInit () {
         headers: config.headers
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Проверка получения данных с сервера
@@ -62,15 +58,8 @@ export function profileDataPatch (profileName, profileAbout) {
           })
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Отправка новой карточки на сервер
@@ -85,15 +74,8 @@ export function newCardDataPost (cardName, cardLink) {
           })
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Удаление карточки с сервера
@@ -104,15 +86,8 @@ export function removeCardDataDelete (cardId) {
         headers: config.headers
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Лайк карточки
@@ -123,15 +98,8 @@ export function likeCardDataPut (cardId) {
         headers: config.headers
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Снятие лайка карточки
@@ -142,15 +110,8 @@ export function likeCardDataDelete (cardId) {
         headers: config.headers
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };
 
 //Обновление аватара профиля
@@ -164,13 +125,6 @@ export function profileAvatarDataPatch (link) {
           })
     })
     .then( (res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Код ошибки: ${res.status}`);
+        return handleResponse(res);
     })
-    .catch((err) => {
-        console.error(err);
-    });
 };

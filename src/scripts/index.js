@@ -10,6 +10,17 @@ const cardsList = document.querySelector(".places__list");
 let removeCardData;
 let removeCardElement;
 
+//Объект конфига валидации
+
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+};
+
 //Триггеры открытия попапов
 
 const addCardButton = document.querySelector(".profile__add-button");
@@ -47,7 +58,7 @@ const profileInfoDesc = document.querySelector(".profile__description");
 
 //Модальное окно картинки карточки
 
-function imageModal (card) {
+function openImageModal (card) {
     popupImageCaption.textContent = card.name;
     popupImage.src = card.link;
     popupImage.alt = card.name;
@@ -57,8 +68,8 @@ function imageModal (card) {
 
 //Вывести карточки на страницу
 
-const renderCards = (card, cardOwner, isLiked) => {
-    const newCard = createCard(card, cardOwner, isLiked, removeCardModal, handleLikeClick, imageModal, likeCardDataPut, likeCardDataDelete);
+const renderCard = (card, cardOwner, isLiked) => {
+    const newCard = createCard(card, cardOwner, isLiked, openRemoveCardModal, handleLikeClick, openImageModal, likeCardDataPut, likeCardDataDelete);
 
     cardsList.append(newCard);
 };
@@ -66,7 +77,7 @@ const renderCards = (card, cardOwner, isLiked) => {
 //Создание новой карточки
 
 const createNewCard = (card, cardOwner) => {
-    const newCard = createCard(card, cardOwner, false, removeCardModal, handleLikeClick, imageModal, likeCardDataPut, likeCardDataDelete);
+    const newCard = createCard(card, cardOwner, false, openRemoveCardModal, handleLikeClick, openImageModal, likeCardDataPut, likeCardDataDelete);
 
     cardsList.prepend(newCard);
 };
@@ -76,40 +87,19 @@ const createNewCard = (card, cardOwner) => {
 editProfileAvatarButton.addEventListener("click", function () {
     openModal(popupAvatar);
     avatarForm.reset();
-    clearValidation(avatarForm, {
-        formSelector: '.popup__form',
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__button',
-        inactiveButtonClass: 'popup__button_disabled',
-        inputErrorClass: 'popup__input_type_error',
-        errorClass: 'popup__error_visible'
-    });
+    clearValidation(avatarForm, validationConfig);
 });
 
 addCardButton.addEventListener("click", function () {
     openModal(popupAddCard);
     addCardForm.reset();
-    clearValidation(addCardForm, {
-        formSelector: '.popup__form',
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__button',
-        inactiveButtonClass: 'popup__button_disabled',
-        inputErrorClass: 'popup__input_type_error',
-        errorClass: 'popup__error_visible'
-    });
+    clearValidation(addCardForm, validationConfig);
 });
 
 editProfileButton.addEventListener("click", function () {
     openModal(popupEdit);
-    formInit();
-    clearValidation(editForm, {
-        formSelector: '.popup__form',
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__button',
-        inactiveButtonClass: 'popup__button_disabled',
-        inputErrorClass: 'popup__input_type_error',
-        errorClass: 'popup__error_visible'
-    });
+    clearValidation(editForm, validationConfig);
+    editProfileformInit();
 });
 
 deleteCardConfirmButton.addEventListener("click", function () {
@@ -123,7 +113,7 @@ deleteCardConfirmButton.addEventListener("click", function () {
 
 //Функция открытия модального окна удаления карточки
 
-function removeCardModal (evt, card) {
+function openRemoveCardModal (evt, card) {
     removeCardData = card;
     removeCardElement = evt.target.closest(".card");
 
@@ -151,7 +141,7 @@ avatarForm.addEventListener('submit', handleEditAvatarSubmit);
 
 //Иницилизация формы
 
-function formInit () {
+function editProfileformInit () {
     editInputName.value = profileInfoName.textContent;
     editInputDesc.value = profileInfoDesc.textContent;
 };
@@ -190,10 +180,6 @@ function handleAddCardFormSubmit (event) {
     console.error(err);
     })
     .finally( () => {
-        clearValidation(addCardForm, {
-            submitButtonSelector: '.popup__button',
-            inactiveButtonClass: 'popup__button_disabled'
-        });
         currentButton.textContent = "Сохранение";
         closeModal(popupAddCard);
     })
@@ -219,22 +205,12 @@ function handleEditAvatarSubmit (event) {
 
 //Активация валидации форм
 
-enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-});
+enableValidation(validationConfig);
 
 //Иницилизация данных страницы
 
 dataInit()
-.then( (res) => {
-    const profileData = res[0];
-    const cardsData = res[1];
-
+.then( ([profileData, cardsData]) => {
     profileInfoAvatar.setAttribute("style", `background-image: url(${profileData.avatar})`);
     profileInfoName.textContent = profileData.name;
     profileInfoDesc.textContent = profileData.about;
@@ -242,9 +218,9 @@ dataInit()
     cardsData.forEach( (card) => {
         const ownedCard = profileData._id === card.owner._id;
         const likeId = (like) => like._id === profileData._id;
-        const isLiked = card.likes.flat().some(likeId);
+        const isLiked = card.likes.some(likeId);
 
-        renderCards(card, ownedCard, isLiked);
+        renderCard(card, ownedCard, isLiked);
     })
 })
 .catch( (err) => {
